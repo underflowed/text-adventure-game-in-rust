@@ -13,9 +13,9 @@ fn main() {
         and the walls look like dirt"
     );
     let mut input = String::new();
-    while input.contains("shovel") != true {
+    while !(input.contains("shovel")) {
         input = get_input();
-        if input.contains("shovel") != true {
+        if !(input.contains("shovel")) {
             println!("your character doesn't know what that is");
         }
     }
@@ -26,9 +26,9 @@ fn main() {
 fn room2() {
     println!("You dug yourself out, congrats, you see a door in front of you");
     let mut input = String::new();
-    while input.contains("door") != true {
+    while !(input.contains("door")) {
         input = get_input();
-        if input.contains("door") || input.contains("memes") != true{
+        if !(input.contains("door") || input.contains("memes")){
             println!("your character doesn't know what that is");
         }
         if input.contains("memes") {
@@ -42,12 +42,12 @@ fn room3() {
     println!("You creak open the door, and in front of you is an axe!");
     let mut input = String::new();
     let mut inventory = vec!["Shovel"];
-    while input.contains("axe") & input.contains("grab") != true {
+    while !(input.contains("grab") && input.contains("axe")) {
         input = get_input();
-        if input.contains("lick") & input.contains("") != true{
+        if !(input.contains("lick") || input.contains("axe")) {
             println!("your character doesn't know what that is");
         }
-        if input.contains("lick") & input.contains("axe") {
+        if input.contains("lick"){
             println!("bunny what the fuck");
         }
     }
