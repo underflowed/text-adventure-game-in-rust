@@ -17,11 +17,6 @@ fn get_input() -> String {
 }
 
 fn main() {
-    //this is prob useless ill fix this
-    GameLoop();
-}
-
-fn GameLoop() {
     //Player Properties
     let mut player = Player {
         Inventory: vec!["Shovel".to_string()],
