@@ -85,19 +85,23 @@ impl Room for EntranceRoom {
 
 impl Room for AxeRoom {
     fn description(&self) -> String {
-        String::from("You look around this room. You see a door on the left wall, as well as an axe in front of you.")
+        String::from("You look around this room. You see a door on the right wall, as well as an axe in front of you.")
     }
 
     fn handle(&self, player: &mut Player) -> Event {
         println!("{}", self.description());
         loop {
             let input = get_input();
-            if input.contains("axe") {
+            if input.contains("grab") && input.contains("axe") {
                 println!("You grab the axe!");
                 player.inventory.push(Item::Axe);
             } else if input.contains("open") && input.contains("door") {
                 println!("You open the door and walk in.");
                 return Event::MoveRight;
+            } else if input.contains("lick") && input.contains("axe") {
+                println!("Why would you do that.");
+                player.amount_of_things_licked += 1;
+
             } else {
                 println!("I didn't understand that.");
             }
@@ -131,21 +135,6 @@ fn main() {
         inventory: vec![Item::Shovel],
         amount_of_things_licked: 0,
     };
-
-    // Counting amount of things licked, will lead to secret ending if lick counter reaches 50.
-
-    /*
-    if input.contains("lick") {
-        println!("bunny stop");
-        player.amount_of_things_licked += 1
-    }
-    if input.contains("inventory") {
-        println!("You currently have");
-        for item in player.inventory.iter() {
-            println!("{}", item.to_string());
-        }
-    }
-    */
 
     loop {
         let (x, y) = (player.map_location.x, player.map_location.y);
