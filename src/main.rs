@@ -35,6 +35,7 @@ impl Location {
 enum Item {
     Shovel,
     Axe,
+    Torch,
 }
 
 impl Item {
@@ -42,6 +43,7 @@ impl Item {
         match &self {
             Item::Shovel => "Shovel",
             Item::Axe => "Axe",
+            Item::Torch => "Torch",
         }
     }
 }
@@ -61,6 +63,7 @@ enum Event {
 struct EntranceRoom {}
 struct AxeRoom {}
 struct BodyRoom {}
+struct DarkRoom {}
 
 impl Room for EntranceRoom {
     fn description(&self) -> String {
@@ -76,6 +79,9 @@ impl Room for EntranceRoom {
             if input.contains("shovel") {
                 println!("You dig yourself out into another room.");
                 return Event::MoveRight;
+            } else if input.contains("grab") && input.contains("torch") {
+                println!("You grab the torch!");
+                player.inventory.push(Item::Torch)
             } else {
                 println!("I didn't understand that.");
             }
@@ -85,7 +91,7 @@ impl Room for EntranceRoom {
 
 impl Room for AxeRoom {
     fn description(&self) -> String {
-        String::from("You look around this room. You see a door on the right wall, as well as an axe in front of you.")
+        String::from("You look around this room. You see a door on the right wall, as well as an axe laying on the ground in front of you. Light pours in from the cieling.")
     }
 
     fn handle(&self, player: &mut Player) -> Event {
@@ -111,15 +117,35 @@ impl Room for AxeRoom {
 
 impl Room for BodyRoom {
     fn description(&self) -> String {
-        String::from("The room is filled with bodies, not fresh, however they look like they've been here a while. A door exists.")
+        String::from("The room is filled with bodies, not fresh, however they look like they've been here a while. A door stands at the end of the room. The light from the room prior is your only light source.")
     }
 
     fn handle(&self, player: &mut Player) -> Event {
         println!("{}", self.description());
         loop {
             let input = get_input();
-            println!("I didn't understand that.");
+            if input.contains("open") && input.contains("door"){
+                println!("The door takes some force to open but you manage to get it open. You walk through it.");
+                //Gives index out of bounds error if you Event:: here
+                println!("Code breaks here if i return Event::MoveUp , Down eg.");
+            } else if input.contains("lick") && input.contains("body") {
+                println!("What the fuck don't lick the dead people");
+                player.amount_of_things_licked += 1;
+            } else {
+                println!("I didn't understand that.");
+            }
         }
+    }
+}
+
+impl Room for DarkRoom {
+    fn description(&self) -> String {
+        String::from("The room lights up as you hold your torch out, theres a musty smell about, The room is filled with cobwebs and the walls are made of wood, You see a door to your left and your right.")
+    }
+
+    fn handle(&self, player: &mut Player) -> Event {
+        println!("It's way too dark! You can barely see inside. You head back to the room with the bodies.");
+        return Event::MoveDown;
     }
 }
 
@@ -128,6 +154,7 @@ fn main() {
         Some(Box::new(EntranceRoom {})),
         Some(Box::new(AxeRoom {})),
         Some(Box::new(BodyRoom {})),
+        Some(Box::new(DarkRoom {})),
     ]];
 
     let mut player = Player {
