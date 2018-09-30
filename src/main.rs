@@ -81,7 +81,7 @@ impl Room for EntranceRoom {
                 return Event::MoveRight;
             } else if input.contains("grab") && input.contains("torch") {
                 println!("You grab the torch!");
-                player.inventory.push(Item::Torch)
+                player.inventory.push(Item::Torch);
             } else {
                 println!("I didn't understand that.");
             }
@@ -96,8 +96,10 @@ impl Room for AxeRoom {
 
     fn handle(&self, player: &mut Player) -> Event {
         println!("{}", self.description());
+
         loop {
             let input = get_input();
+
             if input.contains("grab") && input.contains("axe") {
                 println!("You grab the axe!");
                 player.inventory.push(Item::Axe);
@@ -107,7 +109,6 @@ impl Room for AxeRoom {
             } else if input.contains("lick") && input.contains("axe") {
                 println!("Why would you do that.");
                 player.amount_of_things_licked += 1;
-
             } else {
                 println!("I didn't understand that.");
             }
@@ -122,12 +123,13 @@ impl Room for BodyRoom {
 
     fn handle(&self, player: &mut Player) -> Event {
         println!("{}", self.description());
+
         loop {
             let input = get_input();
+
             if input.contains("open") && input.contains("door"){
                 println!("The door takes some force to open but you manage to get it open. You walk through it.");
-                //Gives index out of bounds error if you Event:: here
-                println!("Code breaks here if i return Event::MoveUp , Down eg.");
+                return Event::MoveRight;
             } else if input.contains("lick") && input.contains("body") {
                 println!("What the fuck don't lick the dead people");
                 player.amount_of_things_licked += 1;
@@ -145,7 +147,7 @@ impl Room for DarkRoom {
 
     fn handle(&self, player: &mut Player) -> Event {
         println!("It's way too dark! You can barely see inside. You head back to the room with the bodies.");
-        return Event::MoveDown;
+        return Event::MoveLeft;
     }
 }
 
