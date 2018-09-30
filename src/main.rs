@@ -32,6 +32,7 @@ impl Location {
     }
 }
 
+#[derive(PartialEq)]
 enum Item {
     Shovel,
     Axe,
@@ -67,7 +68,7 @@ struct DarkRoom {}
 
 impl Room for EntranceRoom {
     fn description(&self) -> String {
-        String::from("You wake up in what looks like a room. Dirt lines the walls, the only source of light is a torch, and there's a shovel in your hand.")
+        String::from("You wake up in what looks like a room. A certain wall to the right of you seems brittle and ready to crumble. The only source of light is a torch, and there's a shovel in your hand.")
     }
 
     fn handle(&self, player: &mut Player) -> Event {
@@ -77,7 +78,7 @@ impl Room for EntranceRoom {
             let input = get_input();
 
             if input.contains("shovel") {
-                println!("You dig yourself out into another room.");
+                println!("You hit the wall with the shovel and it crumbles revealing a room. You walk inside.");
                 return Event::MoveRight;
             } else if input.contains("grab") && input.contains("torch") {
                 println!("You grab the torch!");
@@ -127,7 +128,7 @@ impl Room for BodyRoom {
         loop {
             let input = get_input();
 
-            if input.contains("open") && input.contains("door"){
+            if input.contains("open") && input.contains("door") {
                 println!("The door takes some force to open but you manage to get it open. You walk through it.");
                 return Event::MoveRight;
             } else if input.contains("lick") && input.contains("body") {
@@ -146,8 +147,15 @@ impl Room for DarkRoom {
     }
 
     fn handle(&self, player: &mut Player) -> Event {
-        println!("It's way too dark! You can barely see inside. You head back to the room with the bodies.");
-        return Event::MoveLeft;
+        if !(player.inventory.contains(&Item::Torch)) {
+            println!("It's way too dark! You can barely see inside. You head back to the room with the bodies.");
+            return Event::MoveLeft;
+        } else {
+            println!("{}", self.description());
+            loop {
+                let input = get_input();
+            }
+        }
     }
 }
 
