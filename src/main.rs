@@ -110,6 +110,9 @@ impl Room for AxeRoom {
             } else if input.contains("lick") && input.contains("axe") {
                 println!("Why would you do that.");
                 player.amount_of_things_licked += 1;
+            } else if input.contains("go") && input.contains("back") {
+                println!("You walk back to the room you woke up in.");
+                    return Event::MoveLeft;
             } else {
                 println!("I didn't understand that.");
             }
@@ -134,6 +137,9 @@ impl Room for BodyRoom {
             } else if input.contains("lick") && input.contains("body") {
                 println!("What the fuck don't lick the dead people");
                 player.amount_of_things_licked += 1;
+            } else if input.contains("go") && input.contains("back") {
+                println!("You walk back to the room you were in");
+                return Event::MoveLeft;
             } else {
                 println!("I didn't understand that.");
             }
@@ -154,6 +160,10 @@ impl Room for DarkRoom {
             println!("{}", self.description());
             loop {
                 let input = get_input();
+                if input.contains("go") && input.contains("back") {
+                        println!("You put the torch away and walk back to the room you came from");
+                        return Event::MoveLeft;
+                }
             }
         }
     }
