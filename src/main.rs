@@ -9,6 +9,12 @@ fn get_input() -> String {
     input.to_lowercase()
 }
 
+fn print_inv(inventory: &mut Vec<Item>) {
+    for i in inventory  {
+        println!("\n{}",i.to_string());
+    }
+}
+
 // Decleration of any structs the game will use
 struct Player {
     map_location: Location,
@@ -83,6 +89,8 @@ impl Room for EntranceRoom {
             } else if input.contains("grab") && input.contains("torch") {
                 println!("You grab the torch!");
                 player.inventory.push(Item::Torch);
+            } else if input.contains("check") && input.contains("inventory"){
+                print_inv(&mut player.inventory)      
             } else {
                 println!("I didn't understand that.");
             }
@@ -113,6 +121,8 @@ impl Room for AxeRoom {
             } else if input.contains("go") && input.contains("back") {
                 println!("You walk back to the room you woke up in.");
                     return Event::MoveLeft;
+            } else if input.contains("check") && input.contains("inventory"){
+                print_inv(&mut player.inventory)           
             } else {
                 println!("I didn't understand that.");
             }
@@ -140,6 +150,8 @@ impl Room for BodyRoom {
             } else if input.contains("go") && input.contains("back") {
                 println!("You walk back to the room you were in");
                 return Event::MoveLeft;
+            } else if input.contains("check") && input.contains("inventory"){
+                print_inv(&mut player.inventory)
             } else {
                 println!("I didn't understand that.");
             }
@@ -163,6 +175,8 @@ impl Room for DarkRoom {
                 if input.contains("go") && input.contains("back") {
                         println!("You put the torch away and walk back to the room you came from");
                         return Event::MoveLeft;
+                } else if input.contains("check") && input.contains("inventory"){
+                        print_inv(&mut player.inventory)
                 }
             }
         }
