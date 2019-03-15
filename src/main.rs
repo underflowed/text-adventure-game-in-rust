@@ -1,6 +1,6 @@
 // Text-adventure game in rust
-use std::io::stdin;
 use std::collections::HashSet;
+use std::io::stdin;
 
 fn get_input() -> String {
     let mut input = String::new();
@@ -11,8 +11,8 @@ fn get_input() -> String {
 }
 
 fn print_inv(inventory: &mut Vec<Item>) {
-    for i in inventory  {
-        println!("\n{}",i.to_string());
+    for i in inventory {
+        println!("\n{}", i.to_string());
     }
 }
 
@@ -21,7 +21,7 @@ struct Player {
     map_location: Location,
     inventory: Vec<Item>,
     amount_of_things_licked: i32,
-    visitedHash: HashSet<String>
+    visitedHash: HashSet<String>,
 }
 
 struct Location {
@@ -79,30 +79,33 @@ impl Room for EntranceRoom {
         String::from("You wake up in what looks like a room. A certain wall to the right of you seems brittle and ready to crumble. The only source of light is a torch, and there's a shovel in your hand.")
     }
     fn handle(&self, player: &mut Player) -> Event {
-            if player.visitedHash.contains("1") {
-                println!("You welcome the sight of the broken wall in front of you, I'm sure that took a lot of work. Hopping over rubble on the ground created from your vicious shovel based attack on the wall, you re-enter the room.");
-                if !(player.inventory.contains(&Item::Torch)){
-                    println!("The torch is still burning away on one of the walls in the room.");
-                }
-            } else {
-                println!("{}", self.description());
+        if player.visitedHash.contains("1") {
+            println!("You welcome the sight of the broken wall in front of you, I'm sure that took a lot of work. Hopping over rubble on the ground created from your vicious shovel based attack on the wall, you re-enter the room.");
+            if !(player.inventory.contains(&Item::Torch)) {
+                println!("The torch is still burning away on one of the walls in the room.");
             }
+        } else {
+            println!("{}", self.description());
+        }
 
         loop {
             let input = get_input();
-            if !(player.visitedHash.contains("1")){
+            if !(player.visitedHash.contains("1")) {
                 if input.contains("shovel") {
                     println!("You hit the wall with the shovel and it crumbles revealing a room. You walk inside.");
                     player.visitedHash.insert("1".to_string());
                     return Event::MoveRight;
                 }
-            } if input.contains("grab") && input.contains("torch") {
+            }
+            if input.contains("grab") && input.contains("torch") {
                 println!("You grab the torch!");
                 player.inventory.push(Item::Torch);
             } else if input.contains("check") && input.contains("inventory") {
                 print_inv(&mut player.inventory)
-            } else if input.contains("go") && input.contains("forward") || input.contains("go") && input.contains("through") && input.contains("wall") {
-                 return Event::MoveRight;
+            } else if input.contains("go") && input.contains("forward")
+                || input.contains("go") && input.contains("through") && input.contains("wall")
+            {
+                return Event::MoveRight;
             } else {
                 println!("I didn't understand that.");
             }
@@ -132,8 +135,8 @@ impl Room for AxeRoom {
                 player.amount_of_things_licked += 1;
             } else if input.contains("go") && input.contains("back") {
                 println!("You walk back to the room you woke up in.");
-                    return Event::MoveLeft;
-            } else if input.contains("check") && input.contains("inventory"){
+                return Event::MoveLeft;
+            } else if input.contains("check") && input.contains("inventory") {
                 print_inv(&mut player.inventory)
             } else {
                 println!("I didn't understand that.");
@@ -162,7 +165,7 @@ impl Room for BodyRoom {
             } else if input.contains("go") && input.contains("back") {
                 println!("You walk back to the room you were in");
                 return Event::MoveLeft;
-            } else if input.contains("check") && input.contains("inventory"){
+            } else if input.contains("check") && input.contains("inventory") {
                 print_inv(&mut player.inventory)
             } else {
                 println!("I didn't understand that.");
@@ -185,10 +188,10 @@ impl Room for DarkRoom {
             loop {
                 let input = get_input();
                 if input.contains("go") && input.contains("back") {
-                        println!("You put the torch away and walk back to the room you came from");
-                        return Event::MoveLeft;
-                } else if input.contains("check") && input.contains("inventory"){
-                        print_inv(&mut player.inventory)
+                    println!("You put the torch away and walk back to the room you came from");
+                    return Event::MoveLeft;
+                } else if input.contains("check") && input.contains("inventory") {
+                    print_inv(&mut player.inventory)
                 }
             }
         }
@@ -207,7 +210,7 @@ fn main() {
         map_location: Location::new(0, 0),
         inventory: vec![Item::Shovel],
         amount_of_things_licked: 0,
-        visitedHash: HashSet::new()
+        visitedHash: HashSet::new(),
     };
 
     loop {
