@@ -76,11 +76,13 @@ struct DarkRoom {}
 
 impl Room for EntranceRoom {
     fn description(&self) -> String {
-        String::from("You wake up in what looks like a room. A certain wall to the right of you seems brittle and ready to crumble. The only source of light is a torch, and there's a shovel in your hand.")
+        String::from("You wake up in what looks like a room. A certain wall to the right of you seems brittle and ready to crumble. \
+          The only source of light is a torch, and there's a shovel in your hand.")
     }
     fn handle(&self, player: &mut Player) -> Event {
         if player.visitedHash.contains("1") {
-            println!("You welcome the sight of the broken wall in front of you, I'm sure that took a lot of work. Hopping over rubble on the ground created from your vicious shovel based attack on the wall, you re-enter the room.");
+            println!("You welcome the sight of the broken wall in front of you, I'm sure that took a lot of work. \
+             Hopping over rubble on the ground created from your vicious shovel based attack on the wall, you re-enter the room.");
             if !(player.inventory.contains(&Item::Torch)) {
                 println!("The torch is still burning away on one of the walls in the room.");
             }
@@ -115,7 +117,8 @@ impl Room for EntranceRoom {
 
 impl Room for AxeRoom {
     fn description(&self) -> String {
-        String::from("You look around this room. You see a door on the right wall, as well as an axe laying on the ground in front of you. Light pours in from the cieling.")
+        String::from("You look around this room. You see a door on the right wall, as well as an axe laying on the ground in front of you. \
+        Light pours in from the cieling.")
     }
 
     fn handle(&self, player: &mut Player) -> Event {
@@ -147,7 +150,8 @@ impl Room for AxeRoom {
 
 impl Room for BodyRoom {
     fn description(&self) -> String {
-        String::from("The room is filled with bodies, not fresh, however they look like they've been here a while. A door stands at the end of the room. The light from the room prior is your only light source.")
+        String::from("The room is filled with bodies, not fresh, however they look like they've been here a while. \
+         A door stands at the end of the room. The light from the room prior is your only light source.")
     }
 
     fn handle(&self, player: &mut Player) -> Event {
@@ -176,7 +180,8 @@ impl Room for BodyRoom {
 
 impl Room for DarkRoom {
     fn description(&self) -> String {
-        String::from("The room lights up as you hold your torch out, theres a musty smell about, The room is filled with cobwebs and the walls are made of wood, You see a door to your left and your right.")
+        String::from("The room lights up as you hold your torch out, theres a musty smell about, \
+         The room is filled with cobwebs and the walls are made of wood, You see a door to your left and your right.")
     }
 
     fn handle(&self, player: &mut Player) -> Event {
