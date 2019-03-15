@@ -21,7 +21,7 @@ struct Player {
     map_location: Location,
     inventory: Vec<Item>,
     amount_of_things_licked: i32,
-    visitedHash: HashSet<String>,
+    visitedHash: HashSet<i32>,
 }
 
 struct Location {
@@ -80,7 +80,7 @@ impl Room for EntranceRoom {
           The only source of light is a torch, and there's a shovel in your hand.")
     }
     fn handle(&self, player: &mut Player) -> Event {
-        if player.visitedHash.contains("1") {
+        if player.visitedHash.contains(&1) {
             println!("You welcome the sight of the broken wall in front of you, I'm sure that took a lot of work. \
              Hopping over rubble on the ground created from your vicious shovel based attack on the wall, you re-enter the room.");
             if !(player.inventory.contains(&Item::Torch)) {
@@ -92,10 +92,10 @@ impl Room for EntranceRoom {
 
         loop {
             let input = get_input();
-            if !(player.visitedHash.contains("1")) {
+            if !(player.visitedHash.contains(&1)) {
                 if input.contains("shovel") {
                     println!("You hit the wall with the shovel and it crumbles revealing a room. You walk inside.");
-                    player.visitedHash.insert("1".to_string());
+                    player.visitedHash.insert(1);
                     return Event::MoveRight;
                 }
             }
