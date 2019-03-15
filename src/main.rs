@@ -16,7 +16,6 @@ fn print_inv(inventory: &mut Vec<Item>) {
     }
 }
 
-// Decleration of any structs the game will use
 struct Player {
     map_location: Location,
     inventory: Vec<Item>,
@@ -96,7 +95,7 @@ impl Room for EntranceRoom {
                 if input.contains("shovel") {
                     println!("You hit the wall with the shovel and it crumbles revealing a room. You walk inside.");
                     player.visitedHash.insert(1);
-                    return Event::MoveRight;
+                    return Event::MoveDown;
                 }
             }
             if input.contains("grab") && input.contains("torch") {
@@ -107,7 +106,8 @@ impl Room for EntranceRoom {
             } else if input.contains("go") && input.contains("forward")
                 || input.contains("go") && input.contains("through") && input.contains("wall")
             {
-                return Event::MoveRight;
+                println!("You hope once more over the rubble into the other room.");
+                return Event::MoveDown;
             } else {
                 println!("I didn't understand that.");
             }
@@ -117,7 +117,7 @@ impl Room for EntranceRoom {
 
 impl Room for AxeRoom {
     fn description(&self) -> String {
-        String::from("You look around this room. You see a door on the right wall, as well as an axe laying on the ground in front of you. \
+        String::from("You look around this room. You see a door on the left wall, as well as an axe laying on the ground in front of you. \
         Light pours in from the cieling.")
     }
 
@@ -138,7 +138,7 @@ impl Room for AxeRoom {
                 player.amount_of_things_licked += 1;
             } else if input.contains("go") && input.contains("back") {
                 println!("You walk back to the room you woke up in.");
-                return Event::MoveLeft;
+                return Event::MoveUp;
             } else if input.contains("check") && input.contains("inventory") {
                 print_inv(&mut player.inventory)
             } else {
@@ -150,7 +150,8 @@ impl Room for AxeRoom {
 
 impl Room for BodyRoom {
     fn description(&self) -> String {
-        String::from("The room is filled with bodies, not fresh, however they look like they've been here a while. \
+        String::from("Upon walking in you get the whiff of some god awful aroma, upon inspection you realize that the room is filled with bodies, \
+        not fresh, however they look like they've been here a while. \
          A door stands at the end of the room. The light from the room prior is your only light source.")
     }
 
@@ -180,7 +181,7 @@ impl Room for BodyRoom {
 
 impl Room for DarkRoom {
     fn description(&self) -> String {
-        String::from("The room lights up as you hold your torch out, theres a musty smell about, \
+        String::from("The room lights up as you hold your torch out, your happy to notice this one doesnt have human remains, \
          The room is filled with cobwebs and the walls are made of wood, You see a door to your left and your right.")
     }
 
@@ -204,12 +205,17 @@ impl Room for DarkRoom {
 }
 
 fn main() {
-    let mut map: Vec<Vec<Option<Box<Room>>>> = vec![vec![
-        Some(Box::new(EntranceRoom {})),
-        Some(Box::new(AxeRoom {})),
-        Some(Box::new(BodyRoom {})),
-        Some(Box::new(DarkRoom {})),
-    ]];
+    let mut map: Vec<Vec<Option<Box<Room>>>> = vec![
+        vec![
+            Some(Box::new(EntranceRoom {})),
+            ],
+        vec![
+            Some(Box::new(AxeRoom{})),
+            Some(Box::new(BodyRoom {})),
+            Some(Box::new(DarkRoom {})),
+            ]
+
+    ];
 
     let mut player = Player {
         map_location: Location::new(0, 0),
