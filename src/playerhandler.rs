@@ -1,4 +1,4 @@
-pub mod PlayerHandler{
+pub mod player_handler{
     use std::collections::HashSet;
     use std::io::stdin;
     use Item;
