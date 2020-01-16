@@ -1,46 +1,11 @@
 // Text-adventure game in rust
+mod playerhandler;
 use std::collections::HashSet;
 use std::io::stdin;
-
-fn get_input() -> String {
-    let mut input = String::new();
-    stdin()
-        .read_line(&mut input)
-        .expect("Could not read input.");
-    input.to_lowercase()
-}
-
-fn print_inv(inventory: &mut Vec<Item>) {
-    for i in inventory {
-        println!("\n{}", i.to_string());
-    }
-}
-
-struct Player {
-    map_location: Location,
-    inventory: Vec<Item>,
-    amount_of_things_licked: i32,
-    visitedHash: HashSet<i32>,
-}
-
-struct Location {
-    x: i32,
-    y: i32,
-}
-
-impl Location {
-    fn new(x: i32, y: i32) -> Location {
-        Location { x, y }
-    }
-
-    fn add(&mut self, x: i32, y: i32) {
-        self.x += x;
-        self.y += y;
-    }
-}
+use playerhandler::PlayerHandler::*;
 
 #[derive(PartialEq)]
-enum Item {
+pub enum Item {
     Shovel,
     Axe,
     Torch,
@@ -90,9 +55,9 @@ impl Room for EntranceRoom {
         }
 
         loop {
-            let input = get_input();
+            let input = playerhandler::PlayerHandler::get_input();
             if !(player.visitedHash.contains(&1)) {
-                if input.contains("shovel") {
+                if input.contains("hit") {
                     println!("You hit the wall with the shovel and it crumbles revealing a room. You walk inside.");
                     player.visitedHash.insert(1);
                     return Event::MoveDown;
@@ -125,7 +90,7 @@ impl Room for AxeRoom {
         println!("{}", self.description());
 
         loop {
-            let input = get_input();
+            let input = playerhandler::PlayerHandler::get_input();
 
             if input.contains("grab") && input.contains("axe") {
                 println!("You grab the axe!");
@@ -141,6 +106,8 @@ impl Room for AxeRoom {
                 return Event::MoveUp;
             } else if input.contains("check") && input.contains("inventory") {
                 print_inv(&mut player.inventory)
+            } else if input.contains("look") && input.contains("up") {
+                println!("The light shines down in rays on your face, the roof is riddled with holes from what seems like years of decay and wear.");
             } else {
                 println!("I didn't understand that.");
             }
@@ -159,7 +126,7 @@ impl Room for BodyRoom {
         println!("{}", self.description());
 
         loop {
-            let input = get_input();
+            let input = playerhandler::PlayerHandler::get_input();
 
             if input.contains("open") && input.contains("door") {
                 println!("The door takes some force to open but you manage to get it open. You walk through it.");
@@ -192,7 +159,7 @@ impl Room for DarkRoom {
         } else {
             println!("{}", self.description());
             loop {
-                let input = get_input();
+                let input = playerhandler::PlayerHandler::get_input();
                 if input.contains("go") && input.contains("back") {
                     println!("You put the torch away and walk back to the room you came from");
                     return Event::MoveLeft;
@@ -217,8 +184,8 @@ fn main() {
 
     ];
 
-    let mut player = Player {
-        map_location: Location::new(0, 0),
+    let mut player = playerhandler::PlayerHandler::Player {
+        map_location: playerhandler::PlayerHandler::Location::new(0, 0),
         inventory: vec![Item::Shovel],
         amount_of_things_licked: 0,
         visitedHash: HashSet::new(),
