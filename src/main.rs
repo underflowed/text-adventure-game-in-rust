@@ -2,10 +2,10 @@
 mod playerhandler;
 mod roomhandler;
 
-use std::collections::HashSet;
-use std::io::stdin;
 use playerhandler::player_handler::*;
 use roomhandler::room_handler::*;
+use std::collections::HashSet;
+use std::io::stdin;
 
 #[derive(PartialEq)]
 pub enum Item {
@@ -26,15 +26,12 @@ impl Item {
 
 fn main() {
     let mut map: Vec<Vec<Option<Box<Room>>>> = vec![
+        vec![Some(Box::new(EntranceRoom {}))],
         vec![
-            Some(Box::new(EntranceRoom {})),
-            ],
-        vec![
-            Some(Box::new(AxeRoom{})),
+            Some(Box::new(AxeRoom {})),
             Some(Box::new(BodyRoom {})),
             Some(Box::new(DarkRoom {})),
-            ]
-
+        ],
     ];
 
     let mut player = playerhandler::player_handler::Player {
